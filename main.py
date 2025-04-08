@@ -3,38 +3,48 @@ class Graf:
         self.V=V
         self.E=E
 
-def graf_nieskierowany():
-    m=0
-    print("===WYBÓR METODY===")
-    print("Podaj w jaki sposób zdefiniujesz graf(0-4):\n1. Macierz sąsiedztwa\n2. Macierz incydencji\n3. Lista krawędzi\n4. Lista sąsieztwa\n0. MENU")
-    m=int(input())
-    match(m):
-        case 1:
-            macierz_sąsiedztwa()
+def macierz_sąsiedztwa(wej):
+    rząd=wej[0][0]
+    rozmiar=wej[0][1]
+    macierz = [[0 for i in range(rząd)] for j in range(rząd)]
+    wej.pop(0)
+    for i in wej:
+        macierz[i[0]-1][i[1]-1]=1
+        macierz[i[1]-1][i[0]-1]=-1
+    return macierz
 
-def graf_skierowany():
-    m=0
-    print("===WYBÓR METODY===")
-    print("Podaj w jaki sposób zdefiniujesz graf(0-6):\n1. Macierz sąsiedztwa\n2. Macierz incydencji\n3. Lista krawędzi\n4. Lista następników\n5.Lista poprzedników\n6. Macierz grafu\n0. MENU")
-
-def macierz_sąsiedztwa():
-    return 9
+def lista_następników(wej):
+    macierz=[]
+    rząd=wej[0][0]
+    rozmiar=wej[0][1]
+    wej.pop(0)
+    for i in range (rząd):
+        macierz.append([0])
+    for i in wej:
+        macierz[i[0]-1].append(i[1])
+    licz=1
+    for i in macierz:
+        i.sort()
+        i[0]=licz
+        licz+=1
+    return macierz
 
 def main():
-    print("===MENU GŁÓWNE===")
-    print("Podaj typ grafu (0-2):\n1. Nieskierowany\n2. Skierowany\n0. Wyjście")
-    n=int(input())
+    f=open("wej.txt","r")
+    wej=[]
+    for i in f:
+        wej.append(list(map(int,i.split())))
+    print(wej)
+    print("===WYBÓR METODY===")
+    print("Podaj w jaki sposób zdefiniujesz graf:\n1. Macierz sąsiedztwa\n2. Lista następników\n0. Wyjście")
+    n=int(input("Liczba(0-2):"))
     match(n):
         case 0:
             exit(0)
         case 1:
-            graf_nieskierowany()
+            graf=macierz_sąsiedztwa(wej)
         case 2:
-            graf_skierowany()
-    V=[1,2,3,4,5]
-    E=[1,2,3,4,5,6,7,8,9,10]
-    g=Graf(V,E)
-
+            graf=lista_następników(wej)
 
 if __name__ == "__main__":
     main()
