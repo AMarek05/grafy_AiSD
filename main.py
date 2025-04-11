@@ -76,11 +76,9 @@ def alg_Kahna_ms(graf):
         if poprzedniki[i]==0:
             queue.append(i)
             visited[i]=1
-
     while queue:
         elem=queue.popleft()
         posortowane.append(elem+1)
-
         for i in range(len(graf)):
             if graf[elem][i]==1:
                 poprzedniki[i]-=1
@@ -91,9 +89,44 @@ def alg_Kahna_ms(graf):
     posortowane.reverse()
     if len(posortowane)!=len(graf):
         print("Graf zawiera cykl, nie można go posortować")
-        return posortowane
+        return
     else:
         return posortowane
+
+def alg_Kahna_ln(graf):
+    poprzedniki=[]
+    posortowane=[]
+    visited=[]
+    poprzedniki=[0]*len(graf)
+    visited=[0]*len(graf)
+    for i in graf:
+        for j in i[1:]:
+            poprzedniki[j-1]+=1
+    queue=deque()
+    for i in range(len(graf)):
+        if poprzedniki[i]==0:
+            queue.append(i)
+            visited[i]=1
+    while queue:
+        elem=queue.popleft()
+        posortowane.append(elem+1)
+        for i in graf[elem][1:]:
+            poprzedniki[i-1]-=1
+        for i in range(len(graf)):
+            if poprzedniki[i]==0 and visited[i]==0:
+                queue.append(i)
+                visited[i]=1
+    if len(posortowane)!=len(graf):
+        print("Graf zawiera cykl, nie można go posortować")
+        return
+    else:
+        return posortowane
+    
+def alg_Tarjana_ms(graf):
+    return 0
+
+def alg_Tarjana_ln(graf):
+    return 0
 
 def czy_posortowane(graf):
     print("Podaj ciąg do sprawdzenia:")
@@ -121,7 +154,6 @@ def main():
     wej=[]
     for i in f:
         wej.append(list(map(int,i.split())))
-    print(wej)
     print("===WYBÓR METODY IMPLEMENTACJI===")
     print("Podaj w jaki sposób zdefiniujesz graf:\n1. Macierz sąsiedztwa\n2. Lista następników\n0. Wyjście")
     n=int(input("Liczba(0-2):"))
@@ -137,8 +169,17 @@ def main():
                 case 1:
                     posortowane=alg_Kahna_ms(graf)
                     print(posortowane)
+                case 2:
+                    posortowane=alg_Tarjana_ms(graf)
+                    print(posortowane)
         case 2:
             graf=lista_następników(wej)
-            print(graf)
+            match(m):
+                case 1:
+                    posortowane=alg_Kahna_ln(graf)
+                    print(posortowane)
+                case 2:
+                    posortowane=alg_Tarjana_ln(graf)
+                    print(posortowane)
 if __name__ == "__main__":
     main()
