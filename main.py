@@ -1,3 +1,5 @@
+from collections import deque
+
 
 class Graf:
     def __init__(self,V,E):
@@ -30,35 +32,68 @@ def lista_następników(wej):
         licz+=1
     return macierz
 
-def alg_Kahna_ms(graf):
-    poprzedniki={}
-    posortowane=[]
-    for i in range(len(graf)):
-        poprzedniki[i+1]=[]
-        for j in range(len(graf[i])):
-            if graf[i][j]==-1:
-                poprzedniki[i+1].append(j+1)
-    pętla=False
-    while len(posortowane)<len(graf):
-        if pętla:
-            print("Graf zawiera cykl, nie można go posortować")
-            break
-        else:
-            pętla=True
-        for i in range(1,len(graf)+1):
-            if i in poprzedniki.keys():
-                if len(poprzedniki[i])==0:
-                    pętla=False
-                    posortowane.append(i)
-                    for j in range(1,len(graf)+1):
-                        if j in poprzedniki.keys():
-                            if i in poprzedniki[j] :
-                                poprzedniki[j].remove(i)
-                    poprzedniki.pop(i)
-                    break
-    posortowane.reverse()
-    return posortowane
+# def alg_Kahna_ms(graf):
+#     poprzedniki={}
+#     posortowane=[]
+#     for i in range(len(graf)):
+#         poprzedniki[i+1]=[]
+#         for j in range(len(graf[i])):
+#             if graf[i][j]==-1:
+#                 poprzedniki[i+1].append(j+1)
+#     pętla=False
+#     while len(posortowane)<len(graf):
+#         if pętla:
+#             print("Graf zawiera cykl, nie można go posortować")
+#             break
+#         else:
+#             pętla=True
+#         for i in range(1,len(graf)+1):
+#             if i in poprzedniki.keys():
+#                 if len(poprzedniki[i])==0:
+#                     pętla=False
+#                     posortowane.append(i)
+#                     for j in range(1,len(graf)+1):
+#                         if j in poprzedniki.keys():
+#                             if i in poprzedniki[j] :
+#                                 poprzedniki[j].remove(i)
+#                     poprzedniki.pop(i)
+#                     break
+#     posortowane.reverse()
+#     return posortowane
 
+def alg_Kahna_ms(graf):
+    poprzedniki=[]
+    posortowane=[]
+    visited=[]
+    poprzedniki=[0 for i in range(len(graf))]
+    visited=[0 for i in range(len(graf))]
+    for i in range(len(graf)):
+        for j in range(len(graf)):
+            if graf[i][j]==1:
+                poprzedniki[j]+=1
+    queue=deque()
+    for i in range(len(graf)):
+        if poprzedniki[i]==0:
+            queue.append(i)
+            visited[i]=1
+
+    while queue:
+        elem=queue.popleft()
+        posortowane.append(elem+1)
+
+        for i in range(len(graf)):
+            if graf[elem][i]==1:
+                poprzedniki[i]-=1
+        for i in range(len(graf)):
+            if poprzedniki[i]==0 and visited[i]==0:
+                queue.append(i)
+                visited[i]=1
+    posortowane.reverse()
+    if len(posortowane)!=len(graf):
+        print("Graf zawiera cykl, nie można go posortować")
+        return posortowane
+    else:
+        return posortowane
 
 def czy_posortowane(graf):
     print("Podaj ciąg do sprawdzenia:")
