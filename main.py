@@ -32,35 +32,6 @@ def lista_następników(wej):
         licz+=1
     return macierz
 
-# def alg_Kahna_ms(graf):
-#     poprzedniki={}
-#     posortowane=[]
-#     for i in range(len(graf)):
-#         poprzedniki[i+1]=[]
-#         for j in range(len(graf[i])):
-#             if graf[i][j]==-1:
-#                 poprzedniki[i+1].append(j+1)
-#     pętla=False
-#     while len(posortowane)<len(graf):
-#         if pętla:
-#             print("Graf zawiera cykl, nie można go posortować")
-#             break
-#         else:
-#             pętla=True
-#         for i in range(1,len(graf)+1):
-#             if i in poprzedniki.keys():
-#                 if len(poprzedniki[i])==0:
-#                     pętla=False
-#                     posortowane.append(i)
-#                     for j in range(1,len(graf)+1):
-#                         if j in poprzedniki.keys():
-#                             if i in poprzedniki[j] :
-#                                 poprzedniki[j].remove(i)
-#                     poprzedniki.pop(i)
-#                     break
-#     posortowane.reverse()
-#     return posortowane
-
 def alg_Kahna_ms(graf):
     poprzedniki=[]
     posortowane=[]
@@ -122,6 +93,49 @@ def alg_Kahna_ln(graf):
     else:
         return posortowane
 
+def alg_Tarjana_ms(graf):
+    kolor=[0]*len(graf) #0 - biały, 1 - szary, 2 - czarny
+    posortowane=[]
+    ścieżka=[]
+    print("===WYBÓR POCZĄTKU===")
+    print("Wybierz indeks początkowego wierzchołka:\n1. Najniższy indeks\n2. Indeks wpisany z klawiatury\n0. Wyjdź")
+    n=int(input("podaj liczbę (0-2): "))
+    match(n):
+        case 2:
+            pocz=int(input("Podaj indeks początkowy: "))
+        case 1:
+            pocz=1
+        case 0:
+            exit(0)
+    kolor[pocz-1]=1
+    while len(posortowane)!=len(graf):
+        czy_białe=False
+        for i in range(len(graf[pocz-1])):
+            if graf[pocz-1][i]==1 and kolor[i]==0:
+                czy_białe=True
+                ścieżka.append(pocz)
+                pocz=i+1
+                kolor[pocz-1]=1
+                break
+            if graf[pocz-1][i]==1 and kolor[i]==1:
+                print("Graf zawiera cykl, nie można go posortować")
+                return
+        if not czy_białe:
+            kolor[pocz-1]=2
+            posortowane.append(pocz)
+            if ścieżka:
+                pocz=ścieżka.pop()
+            else:
+                czy_koniec=True
+                for i in range(len(kolor)):
+                    if kolor[i]!=2:
+                        pocz=i+1
+                        czy_koniec=False
+                        break
+                if czy_koniec==True:
+                    break
+    return posortowane
+
 def alg_Tarjana_ln(graf):
     kolor=[0]*len(graf) #0 - biały, 1 - szary, 2 - czarny
     posortowane=[]
@@ -146,6 +160,9 @@ def alg_Tarjana_ln(graf):
                 pocz=i
                 kolor[pocz-1]=1
                 break
+            if kolor[i-1]==1:
+                print("Graf zawiera cykl, nie można go posortować")
+                return
         if not czy_białe:
             kolor[pocz-1]=2
             posortowane.append(pocz)
@@ -162,9 +179,6 @@ def alg_Tarjana_ln(graf):
                     break
     posortowane.reverse()
     return posortowane
-
-def alg_Tarjana_ms(graf):
-    return 0
 
 def czy_posortowane(graf):
     print("Podaj ciąg do sprawdzenia:")
