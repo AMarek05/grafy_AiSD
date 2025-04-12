@@ -121,11 +121,49 @@ def alg_Kahna_ln(graf):
         return
     else:
         return posortowane
-    
-def alg_Tarjana_ms(graf):
-    return 0
 
 def alg_Tarjana_ln(graf):
+    kolor=[0]*len(graf) #0 - biały, 1 - szary, 2 - czarny
+    posortowane=[]
+    ścieżka=[]
+    print("===WYBÓR POCZĄTKU===")
+    print("Wybierz indeks początkowego wierzchołka:\n1. Najniższy indeks\n2. Indeks wpisany z klawiatury\n0. Wyjdź")
+    n=int(input("podaj liczbę (0-2): "))
+    match(n):
+        case 2:
+            pocz=int(input("Podaj indeks początkowy: "))
+        case 1:
+            pocz=1
+        case 0:
+            exit(0)
+    kolor[pocz-1]=1
+    while len(posortowane)!=len(graf):
+        czy_białe=False
+        for i in graf[pocz-1][1:]:
+            if kolor[i-1]==0:
+                czy_białe=True
+                ścieżka.append(pocz)
+                pocz=i
+                kolor[pocz-1]=1
+                break
+        if not czy_białe:
+            kolor[pocz-1]=2
+            posortowane.append(pocz)
+            if ścieżka:
+                pocz=ścieżka.pop()
+            else:
+                czy_koniec=True
+                for i in range(len(kolor)):
+                    if kolor[i]!=2:
+                        pocz=i+1
+                        czy_koniec=False
+                        break
+                if czy_koniec==True:
+                    break
+    posortowane.reverse()
+    return posortowane
+
+def alg_Tarjana_ms(graf):
     return 0
 
 def czy_posortowane(graf):
@@ -148,6 +186,11 @@ def czy_posortowane(graf):
                 continue
     print("posortowane")
     exit(0)
+def dostępne_białe(kolor,graf,pocz):
+    for i in graf[pocz-1][1:]:
+        if kolor[i-1]==0:
+            return True
+    return False
 
 def main():
     f=open("wej2.txt","r")
