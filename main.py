@@ -207,7 +207,7 @@ def dostępne_białe(kolor,graf,pocz):
     return False
 
 def main():
-    f=open("wej2.txt","r")
+    f=open("b.txt","r")
     wej=[]
     for i in f:
         wej.append(list(map(int,i.split())))
