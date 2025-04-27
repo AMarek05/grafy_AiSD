@@ -1,0 +1,80 @@
+Sprawdzanie Matrix Kahn: 100
+100;2.727
+Sprawdzanie Matrix Kahn: 200
+200;8.215
+Sprawdzanie Matrix Kahn: 300
+300;16.852
+Sprawdzanie Matrix Kahn: 400
+400;33.945
+Sprawdzanie Matrix Kahn: 500
+500;61.801
+Sprawdzanie Matrix Kahn: 600
+600;98.593
+Sprawdzanie Matrix Kahn: 700
+700;137.397
+Sprawdzanie Matrix Kahn: 800
+800;188.720
+Sprawdzanie Matrix Kahn: 900
+900;209.736
+Sprawdzanie Matrix Kahn: 1000
+1000;283.446
+Sprawdzanie Matrix Tarjan: 100
+100;2.164
+Sprawdzanie Matrix Tarjan: 200
+200;6.551
+Sprawdzanie Matrix Tarjan: 300
+300;16.229
+Sprawdzanie Matrix Tarjan: 400
+400;32.898
+Sprawdzanie Matrix Tarjan: 500
+500;53.724
+Sprawdzanie Matrix Tarjan: 600
+600;82.703
+Sprawdzanie Matrix Tarjan: 700
+700;121.212
+Sprawdzanie Matrix Tarjan: 800
+800;160.382
+Sprawdzanie Matrix Tarjan: 900
+900;207.690
+Sprawdzanie Matrix Tarjan: 1000
+1000;275.584
+Sprawdzanie List Kahn: 100
+100;1.010
+Sprawdzanie List Kahn: 200
+200;3.116
+Sprawdzanie List Kahn: 300
+300;6.985
+Sprawdzanie List Kahn: 400
+400;13.863
+Sprawdzanie List Kahn: 500
+500;24.169
+Sprawdzanie List Kahn: 600
+600;38.751
+Sprawdzanie List Kahn: 700
+700;56.540
+Sprawdzanie List Kahn: 800
+800;77.953
+Sprawdzanie List Kahn: 900
+900;106.402
+Sprawdzanie List Kahn: 1000
+1000;133.628
+Sprawdzanie List Tarjan: 100
+100;0.497
+Sprawdzanie List Tarjan: 200
+200;1.622
+Sprawdzanie List Tarjan: 300
+300;3.853
+Sprawdzanie List Tarjan: 400
+400;7.733
+Sprawdzanie List Tarjan: 500
+500;14.721
+Sprawdzanie List Tarjan: 600
+600;23.270
+Sprawdzanie List Tarjan: 700
+700;39.245
+Sprawdzanie List Tarjan: 800
+800;50.888
+Sprawdzanie List Tarjan: 900
+900;67.700
+Sprawdzanie List Tarjan: 1000
+1000;92.290

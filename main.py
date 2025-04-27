@@ -1,4 +1,5 @@
 from collections import deque
+import time
 from sys import argv
 from random import shuffle, sample
 
@@ -97,9 +98,10 @@ def alg_Tarjana_ms(graf):
     kolor=[0]*len(graf) #0 - biały, 1 - szary, 2 - czarny
     posortowane=[]
     ścieżka=[]
-    print("===WYBÓR POCZĄTKU===")
-    print("Wybierz indeks początkowego wierzchołka:\n1. Najniższy indeks\n2. Indeks wpisany z klawiatury\n0. Wyjdź")
-    n=int(input("podaj liczbę (0-2): "))
+    # print("===WYBÓR POCZĄTKU===")
+    # print("Wybierz indeks początkowego wierzchołka:\n1. Najniższy indeks\n2. Indeks wpisany z klawiatury\n0. Wyjdź")
+    # n=int(input("podaj liczbę (0-2): "))
+    n = 1
     pocz = 1
     match(n):
         case 2:
@@ -141,9 +143,10 @@ def alg_Tarjana_ln(graf):
     kolor=[0]*len(graf) #0 - biały, 1 - szary, 2 - czarny
     posortowane=[]
     ścieżka=[]
-    print("===WYBÓR POCZĄTKU===")
-    print("Wybierz indeks początkowego wierzchołka:\n1. Najniższy indeks\n2. Indeks wpisany z klawiatury\n0. Wyjdź")
-    n=int(input("podaj liczbę (0-2): "))
+    # print("===WYBÓR POCZĄTKU===")
+    # print("Wybierz indeks początkowego wierzchołka:\n1. Najniższy indeks\n2. Indeks wpisany z klawiatury\n0. Wyjdź")
+    # n=int(input("podaj liczbę (0-2): "))
+    n = 1
     pocz = 1
     match(n):
         case 2:
@@ -247,7 +250,7 @@ def gen_nasycenie(n):
         inc.append([u, v])
     inc.sort()
     inc.insert(0, [n, len(krawędzie)])
-    print(*inc)
+    # print(*inc)
     return inc
 
 def main():
@@ -256,43 +259,60 @@ def main():
     liczba_w = -1
 
     # Gdy podano 1 argument, interpretuj jako l. wierzchołków
-    if len(argv) == 2:
+    if len(argv) > 1:
         liczba_w = int(argv[1])
         assert liczba_w > 3 # Prowadzi do pętli nieskończonej jeśli 3 lub mniejsze
         wej=gen_nasycenie(liczba_w)
+        if len(argv) == 4:
+            # n = int(argv[2])
+            n = 1 if argv[2] == "Matrix" else 2
+            # m = int(argv[3])
+            m = 1 if argv[3] == "Kahn" else 2
+        else:
+            n = 1
+            m = 1
     else:
         for i in f:
             wej.append(list(map(int,i.split())))
+        print("===WYBÓR METODY IMPLEMENTACJI===")
+        print("Podaj w jaki sposób zdefiniujesz graf:\n1. Macierz sąsiedztwa\n2. Lista następników\n0. Wyjście")
+        n=int(input("Liczba(0-2):"))
 
-    print("===WYBÓR METODY IMPLEMENTACJI===")
-    print("Podaj w jaki sposób zdefiniujesz graf:\n1. Macierz sąsiedztwa\n2. Lista następników\n0. Wyjście")
-    n=int(input("Liczba(0-2):"))
-
-    print("===WYBÓR ALGORYTMU SORTOWANIA===")
-    print("Podaj algorytm sortowania topologicznego:\n1. Algorytm Kahna\n2. Algorytm Tajrana\n0. Wyjście")
-    m=int(input("Liczba(0-2):"))
-
+        print("===WYBÓR ALGORYTMU SORTOWANIA===")
+        print("Podaj algorytm sortowania topologicznego:\n1. Algorytm Kahna\n2. Algorytm Tajrana\n0. Wyjście")
+        m=int(input("Liczba(0-2):"))
+    start = time.time()
+    out = "Dla "
     match(n):
         case 0:
             exit(0)
         case 1:
             graf=macierz_sąsiedztwa(wej)
+            out += "macierzy sąsiedztwa algorytmem "
             match(m):
                 case 1:
                     posortowane=alg_Kahna_ms(graf)
-                    print(posortowane)
+                    out += "Kahna "
+                    # print(posortowane)
                 case 2:
                     posortowane=alg_Tarjana_ms(graf)
-                    print(posortowane)
+                    out += "Tarjana"
+                    # print(posortowane)
         case 2:
             graf=lista_następników(wej)
+            out += "listy następników algorytmem "
             match(m):
                 case 1:
                     posortowane=alg_Kahna_ln(graf)
-                    print(posortowane)
+                    out += "Kahna "
+                    # print(posortowane)
                 case 2:
                     posortowane=alg_Tarjana_ln(graf)
-                    print(posortowane)
+                    out += "Tarjana"
+                    # print(posortowane)
+    end = time.time()
+    exec_time = (end - start) * 1000
+    print(f"{liczba_w};{exec_time:.3f}")
     f.close()
 if __name__ == "__main__":
     main()
