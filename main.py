@@ -293,5 +293,7 @@ def main():
                 case 2:
                     posortowane=alg_Tarjana_ln(graf)
                     print(posortowane)
+    f.close()
 if __name__ == "__main__":
     main()
+
