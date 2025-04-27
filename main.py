@@ -1,4 +1,6 @@
 from collections import deque
+from sys import argv
+from random import shuffle, sample
 
 
 class Graf:
@@ -8,8 +10,7 @@ class Graf:
 
 def macierz_sąsiedztwa(wej):
     rząd=wej[0][0]
-    rozmiar=wej[0][1]
-    macierz = [[0 for i in range(rząd)] for j in range(rząd)]
+    macierz = [[0 for _ in range(rząd)] for _ in range(rząd)]
     wej.pop(0)
     for i in wej:
         macierz[i[0]-1][i[1]-1]=-1
@@ -19,9 +20,8 @@ def macierz_sąsiedztwa(wej):
 def lista_następników(wej):
     macierz=[]
     rząd=wej[0][0]
-    rozmiar=wej[0][1]
     wej.pop(0)
-    for i in range (rząd):
+    for _ in range (rząd):
         macierz.append([0])
     for i in wej:
         macierz[i[0]-1].append(i[1])
@@ -36,8 +36,8 @@ def alg_Kahna_ms(graf):
     poprzedniki=[]
     posortowane=[]
     visited=[]
-    poprzedniki=[0 for i in range(len(graf))]
-    visited=[0 for i in range(len(graf))]
+    poprzedniki=[0 for _ in range(len(graf))]
+    visited=[0 for _ in range(len(graf))]
     for i in range(len(graf)):
         for j in range(len(graf)):
             if graf[i][j]==1:
@@ -100,6 +100,7 @@ def alg_Tarjana_ms(graf):
     print("===WYBÓR POCZĄTKU===")
     print("Wybierz indeks początkowego wierzchołka:\n1. Najniższy indeks\n2. Indeks wpisany z klawiatury\n0. Wyjdź")
     n=int(input("podaj liczbę (0-2): "))
+    pocz = 1
     match(n):
         case 2:
             pocz=int(input("Podaj indeks początkowy: "))
@@ -143,6 +144,7 @@ def alg_Tarjana_ln(graf):
     print("===WYBÓR POCZĄTKU===")
     print("Wybierz indeks początkowego wierzchołka:\n1. Najniższy indeks\n2. Indeks wpisany z klawiatury\n0. Wyjdź")
     n=int(input("podaj liczbę (0-2): "))
+    pocz = 1
     match(n):
         case 2:
             pocz=int(input("Podaj indeks początkowy: "))
@@ -206,17 +208,70 @@ def dostępne_białe(kolor,graf,pocz):
             return True
     return False
 
+def czy_spójne(kraw, n):
+    adj=[[] for _ in range(n)]
+    for u, v in kraw:
+        adj[u-1].append(v-1)
+        adj[v-1].append(u-1)
+
+    seen={0}
+    queue=deque([0])
+    while queue:
+        x=queue.popleft()
+        for y in adj[x]:
+            if y not in seen:
+                seen.add(y)
+                queue.append(y)
+
+    return len(seen) == n
+
+def gen_nasycenie(n):
+    topo=list(range(1, n+1))
+    shuffle(topo)
+
+    możliwe=[]
+    for i in range(n):
+        for j in range(i+1, n):
+            możliwe.append((topo[i], topo[j]))
+
+    max=len(możliwe)
+    target=max//2
+
+    while True:
+        krawędzie=sample(możliwe,target)
+        if czy_spójne(krawędzie, n):
+            break
+
+    inc=[]
+    for u, v in krawędzie:
+        inc.append([u, v])
+    inc.sort()
+    inc.insert(0, [n, len(krawędzie)])
+    print(*inc)
+    return inc
+
 def main():
     f=open("b.txt","r")
     wej=[]
-    for i in f:
-        wej.append(list(map(int,i.split())))
+    liczba_w = -1
+
+    # Gdy podano 1 argument, interpretuj jako l. wierzchołków
+    if len(argv) == 2:
+        liczba_w = int(argv[1])
+        assert liczba_w > 3 # Prowadzi do pętli nieskończonej jeśli 3 lub mniejsze
+        wej=gen_nasycenie(liczba_w)
+    else:
+        for i in f:
+            wej.append(list(map(int,i.split())))
+
     print("===WYBÓR METODY IMPLEMENTACJI===")
     print("Podaj w jaki sposób zdefiniujesz graf:\n1. Macierz sąsiedztwa\n2. Lista następników\n0. Wyjście")
     n=int(input("Liczba(0-2):"))
+
     print("===WYBÓR ALGORYTMU SORTOWANIA===")
     print("Podaj algorytm sortowania topologicznego:\n1. Algorytm Kahna\n2. Algorytm Tajrana\n0. Wyjście")
     m=int(input("Liczba(0-2):"))
+
     match(n):
         case 0:
             exit(0)
